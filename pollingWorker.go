@@ -34,8 +34,6 @@ type LifeTimeStatsStruct struct{
   Value string `json:"value"`
 }
 
-  //lifeTimeStats []map[string]string `json:"lifeTimeStats"`
-
 func main() {
 
   players := [4]string{"ninja", "couragejd", "nickmercs", "vadnay%20on%20mixer"}
@@ -63,8 +61,10 @@ func main() {
 
 func getContent(url string, headerKey string, headerValue string, tmp interface{}){
 
+
   log := loggly.New("go-polling-worker")
 
+  //create new request
   client := &http.Client{}
   req, err := http.NewRequest("GET", url, nil)
   if err != nil {
@@ -72,17 +72,19 @@ func getContent(url string, headerKey string, headerValue string, tmp interface{
     fmt.Println("err:", err)
   }
 
+  //api key is a header
   if headerKey != ""{
     req.Header.Add(headerKey, headerValue)
   }
 
-  //json.Marshal(strct)
+  //execute the request
   resp, err := client.Do(req)
   if err != nil {
     err := log.EchoSend("error", err.Error())
     fmt.Println("err:", err)
   }
 
+  //read the bytes od of the response
   body, err := ioutil.ReadAll(resp.Body)
   if err != nil {
     err := log.EchoSend("error", err.Error())
@@ -90,6 +92,7 @@ func getContent(url string, headerKey string, headerValue string, tmp interface{
   }
   defer resp.Body.Close()
 
+  //unmarshal the body into our structs and log them
   json.Unmarshal(body, &tmp)
   err = log.EchoSend("info", "Request to " + url + " succeeded")
   if err != nil{
