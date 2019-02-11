@@ -6,8 +6,8 @@ import(
   "io/ioutil"
   "encoding/json"
   loggly "github.com/jamespearly/loggly"
-  "os"
-  //"time"
+  //"os"
+  "time"
 )
 
 type Store struct{
@@ -38,18 +38,26 @@ type LifeTimeStatsStruct struct{
 
 func main() {
 
+  players := [4]string{"ninja", "couragejd", "nickmercs", "vadnay%20on%20mixer"}
 
-  name := os.Getenv("ACCOUNT_NAME")
-  platform := os.Getenv("PLATFORM")
+  //name := os.Getenv("ACCOUNT_NAME")
+  //platform := os.Getenv("PLATFORM")
 
-  url := "https://api.fortnitetracker.com/v1/profile/" + platform + "/" + name
   apiKey := "TRN-Api-Key"
   apiValue := "d8b929fb-27a1-48dd-a6ac-ef2092db1291"
 
-  playerProfile := new(PlayerProfile)
-  //playerLifeTimeStats := new(PlayerLifetimeStats)
-  getContent(url, apiKey, apiValue, playerProfile)
-  fmt.Printf("%+v\n", playerProfile)
+
+  for {
+    for _, name := range players{
+      url := "https://api.fortnitetracker.com/v1/profile/pc" + "/" + name
+      playerProfile := new(PlayerProfile)
+      //playerLifeTimeStats := new(PlayerLifetimeStats)
+      getContent(url, apiKey, apiValue, playerProfile)
+      fmt.Printf("%+v\n", playerProfile)
+      time.Sleep(time.Second * 10)
+    }
+    time.Sleep(time.Second * 10)
+  }
 
 }
 
