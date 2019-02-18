@@ -6,7 +6,7 @@ import(
   "io/ioutil"
   "encoding/json"
   loggly "github.com/jamespearly/loggly"
-  //"os"
+  "os"
   "time"
 )
 
@@ -42,7 +42,7 @@ func main() {
   //platform := os.Getenv("PLATFORM")
 
   apiKey := "TRN-Api-Key"
-  apiValue := "d8b929fb-27a1-48dd-a6ac-ef2092db1291"
+  apiValue := os.Getenv("TRN_API_KEY")
 
 
   for {
@@ -52,9 +52,9 @@ func main() {
       //playerLifeTimeStats := new(PlayerLifetimeStats)
       getContent(url, apiKey, apiValue, playerProfile)
       fmt.Printf("%+v\n", playerProfile)
-      time.Sleep(time.Second * 10)
+      time.Sleep(time.Second * 300)
     }
-    time.Sleep(time.Second * 10)
+    time.Sleep(time.Second * 300)
   }
 
 }
